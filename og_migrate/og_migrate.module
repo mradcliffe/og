@@ -19,14 +19,18 @@ use Drupal\migrate\Plugin\MigrationInterface;
  * @throws \Drupal\migrate\MigrateSkipRowException
  */
 function og_migrate_migrate_prepare_row(Row $row, MigrateSourceInterface $source, MigrationInterface $migration) {
-  if (in_array($migration->id(), ['d7_field', 'd7_field_instance'])) {
+  // use the source plugin id instead of the migration id,
+  // as the migration id can be altered when using the migration_upgrade module
+  $plugin_id = $source->getPluginId();
+
+  if (in_array($plugin_id, ['d7_field', 'd7_field_instance'])) {
     $field_names = ['og_group_ref', 'og_user_node'];
     if (in_array($row->getSourceProperty('field_name'), $field_names)) {
       throw new MigrateSkipRowException('og-related fields will be migrated separately');
     }
   }
 
-  if (in_array($migration->id(), ['d7_field_instance', 'd7_field_formatter_settings', 'd7_field_instance_widget_settings'])) {
+  if (in_array($plugin_id, ['d7_field_instance', 'd7_field_formatter_settings', 'd7_field_instance_widget_settings'])) {
     // the "og_membership_type_default" bundle is now "default"
     if ($row->getSourceProperty('bundle') == 'og_membership_type_default') {
       $row->setSourceProperty('bundle', 'default');
