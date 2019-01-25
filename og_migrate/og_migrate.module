@@ -30,7 +30,7 @@ function og_migrate_migrate_prepare_row(Row $row, MigrateSourceInterface $source
     }
   }
 
-  if (in_array($plugin_id, ['d7_field_instance', 'd7_field_formatter_settings', 'd7_field_instance_widget_settings'])) {
+  if (in_array($plugin_id, ['d7_field_instance', 'd7_field_instance_per_view_mode', 'd7_field_instance_per_form_display'])) {
     // the "og_membership_type_default" bundle is now "default"
     if ($row->getSourceProperty('bundle') == 'og_membership_type_default') {
       $row->setSourceProperty('bundle', 'default');
