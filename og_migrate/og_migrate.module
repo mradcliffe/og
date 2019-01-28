@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Og Migrate module.
+ * Organic Groups migrate module.
  */
 
 use Drupal\migrate\MigrateSkipRowException;
@@ -19,8 +19,8 @@ use Drupal\migrate\Plugin\MigrationInterface;
  * @throws \Drupal\migrate\MigrateSkipRowException
  */
 function og_migrate_migrate_prepare_row(Row $row, MigrateSourceInterface $source, MigrationInterface $migration) {
-  // use the source plugin id instead of the migration id,
-  // as the migration id can be altered when using the migration_upgrade module
+  // Use the source plugin id instead of the migration id,
+  // as the migration id can be altered when using the migration_upgrade module.
   $plugin_id = $source->getPluginId();
 
   if (in_array($plugin_id, ['d7_field', 'd7_field_instance'])) {
@@ -31,7 +31,7 @@ function og_migrate_migrate_prepare_row(Row $row, MigrateSourceInterface $source
   }
 
   if (in_array($plugin_id, ['d7_field_instance', 'd7_field_instance_per_view_mode', 'd7_field_instance_per_form_display'])) {
-    // the "og_membership_type_default" bundle is now "default"
+    // The "og_membership_type_default" bundle is now "default".
     if ($row->getSourceProperty('bundle') == 'og_membership_type_default') {
       $row->setSourceProperty('bundle', 'default');
     }
