@@ -6,6 +6,7 @@ use Drupal\field\Entity\FieldConfig;
 use Drupal\og\Entity\OgMembership;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\Tests\migrate\Kernel\NodeCommentCombinationTrait;
+use Drupal\Tests\file\Kernel\Migrate\d7\FileMigrationSetupTrait;
 use Drupal\Tests\migrate_drupal\Kernel\d7\MigrateDrupal7TestBase;
 
 /**
@@ -16,23 +17,16 @@ use Drupal\Tests\migrate_drupal\Kernel\d7\MigrateDrupal7TestBase;
 class OgFieldD7MigrateTest extends MigrateDrupal7TestBase {
 
   use NodeCommentCombinationTrait;
+  use FileMigrationSetupTrait;
 
   /**
    * {@inheritdoc}
    */
   public static $modules = [
-    'text',
     'entity_reference',
-    'telephone',
-    'datetime',
-    'image',
-    'link',
-    'filter',
-    'menu_ui',
     'comment',
     'node',
     'system',
-    'taxonomy',
     'og',
     'og_ui',
     'og_migrate',
@@ -44,18 +38,19 @@ class OgFieldD7MigrateTest extends MigrateDrupal7TestBase {
   protected function setUp() {
     parent::setUp();
 
+    $this->fileMigrationSetup();
+
     $this->loadFixture(__DIR__ . '/../../../fixtures/drupal7.php');
     $this->installConfig(static::$modules);
-    $this->createNodeCommentCombination('page');
     $this->createNodeCommentCombination('article');
-    $this->createNodeCommentCombination('blog');
-    $this->createNodeCommentCombination('book');
     $this->createNodeCommentCombination('forum', 'comment_forum');
-    $this->createNodeCommentCombination('test_content_type');
-    Vocabulary::create(['vid' => 'test_vocabulary'])->save();
     $this->executeMigrations([
       'd7_field',
       'd7_field_instance',
+      'd7_user_role',
+      'd7_user',
+      'd7_node_type',
+      'd7_node',
       'd7_og_group',
       'd7_og_field_instance',
     ]);
