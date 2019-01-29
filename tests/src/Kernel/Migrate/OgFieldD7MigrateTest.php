@@ -23,10 +23,18 @@ class OgFieldD7MigrateTest extends MigrateDrupal7TestBase {
    * {@inheritdoc}
    */
   public static $modules = [
+    'text',
     'entity_reference',
+    'telephone',
+    'datetime',
+    'image',
+    'link',
+    'filter',
+    'menu_ui',
     'comment',
     'node',
     'system',
+    'taxonomy',
     'og',
     'og_ui',
     'og_migrate',
@@ -39,11 +47,22 @@ class OgFieldD7MigrateTest extends MigrateDrupal7TestBase {
     parent::setUp();
 
     $this->fileMigrationSetup();
-
     $this->loadFixture(__DIR__ . '/../../../fixtures/drupal7.php');
+
+    $this->installEntitySchema('node');
+    $this->installEntitySchema('comment');
+    $this->installEntitySchema('taxonomy_term');
     $this->installConfig(static::$modules);
+
+    $this->createNodeCommentCombination('page');
     $this->createNodeCommentCombination('article');
+    $this->createNodeCommentCombination('blog');
+    $this->createNodeCommentCombination('book');
     $this->createNodeCommentCombination('forum', 'comment_forum');
+    $this->createNodeCommentCombination('test_content_type');
+
+    Vocabulary::create(['vid' => 'test_vocabulary'])->save();
+
     $this->executeMigrations([
       'd7_field',
       'd7_field_instance',
@@ -54,6 +73,19 @@ class OgFieldD7MigrateTest extends MigrateDrupal7TestBase {
       'd7_og_group',
       'd7_og_field_instance',
     ]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getFileMigrationInfo()
+  {
+    return [
+      'path' => 'public://sites/default/files/cube.jpeg',
+      'size' => '3620',
+      'base_path' => 'public://',
+      'plugin_id' => 'd7_file',
+    ];
   }
 
   /**
