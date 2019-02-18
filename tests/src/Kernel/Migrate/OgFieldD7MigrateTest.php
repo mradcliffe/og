@@ -78,8 +78,7 @@ class OgFieldD7MigrateTest extends MigrateDrupal7TestBase {
   /**
    * {@inheritdoc}
    */
-  protected function getFileMigrationInfo()
-  {
+  protected function getFileMigrationInfo() {
     return [
       'path' => 'public://sites/default/files/cube.jpeg',
       'size' => '3620',
