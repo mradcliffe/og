@@ -42,6 +42,7 @@ class OgUserMembershipD7MigrateTest extends MigrateDrupal7TestBase {
   protected function setUp() {
     parent::setUp();
 
+    $this->loadFixture(__DIR__ . '/../../../fixtures/drupal7.php');
     $this->installEntitySchema('og_membership_type');
     $this->installEntitySchema('og_membership');
     $this->installEntitySchema('og_role');
@@ -53,8 +54,8 @@ class OgUserMembershipD7MigrateTest extends MigrateDrupal7TestBase {
     $this->installEntitySchema('taxonomy_vocabulary');
     $this->installConfig(['comment', 'user', 'node', 'og']);
     $this->installSchema('comment', ['comment_entity_statistics']);
-    $this->installSchema('forum', ['forum_index']);
-    $this->loadFixture(__DIR__ . '/../../../fixtures/drupal7.php');
+    $this->installSchema('forum', ['forum_index', 'forum']);
+    $this->installSchema('node', ['node_access']);
     $this->executeMigrations([
       'd7_filter_format',
       'd7_user_role',

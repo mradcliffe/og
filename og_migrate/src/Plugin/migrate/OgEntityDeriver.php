@@ -159,7 +159,7 @@ class OgEntityDeriver extends DeriverBase implements ContainerDeriverInterface {
           'message' => 'Migration group is missing',
         ],
       ],
-      'etid' => [
+      'entity_id' => [
         [
           'plugin' => 'migration_lookup',
           'migration' => $entity_type_migration,
